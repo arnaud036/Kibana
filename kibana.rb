@@ -7,6 +7,27 @@ require 'rss/maker'
 require 'yaml'
 require 'tzinfo'
 
+require 'haml'
+require 'dm-core'
+require 'dm-migrations'
+require 'rack-flash'
+require 'sinatra-authentication'
+
+class DmUser
+  property :name, String
+end
+
+DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.db")
+DataMapper.auto_migrate!
+
+set :sinatra_authentication_view_path, Pathname(__FILE__).dirname.expand_path + "views/authentication"
+use Rack::Session::Cookie, :secret => "heyhihello"
+use Rack::Flash
+
+set :environment, 'development'
+set :public, 'public'
+set :views,  'views'
+
 $LOAD_PATH << '.'
 $LOAD_PATH << './lib'
 
@@ -43,6 +64,7 @@ helpers do
 end
 
 get '/' do
+  login_required
   send_file File.join(settings.public_folder, 'index.html')
 end
 

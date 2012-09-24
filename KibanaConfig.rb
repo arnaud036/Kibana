@@ -5,7 +5,7 @@ module KibanaConfig
   Elasticsearch = "localhost:9200"
 
   # The port Kibana should listen on
-  KibanaPort = 5601
+  KibanaPort = 9000
 
   # The record type as defined in your logstash configuration.
   # Seperate multiple types with a comma, no spaces. Leave blank
